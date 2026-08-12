@@ -31,17 +31,22 @@ Default PC (workstation) IP is configured in `AppManager` / `UdpSocket` (192.168
 |------|----------|------|
 | 8001 | UDP text | Teleop data (100 Hz). Controller pose: `C,{frameId},{timestampNs},{leftCtrl},{rightCtrl}`. Hand tracking: `H,L|R,{frameId},{timestampNs},{wristPos},{wristRot},{bones...}` or binary `HB,{base64}` |
 | 8003 | UDP text | Recording control: `Start` / `Stop` |
-| 8005 | UDP text | UI state: `{port},{resolution};{port},{resolution};...;{focusModeLabel};` e.g. `8000,x1.0;8002,x1.5;Fine Control Mode,ON;` |
 
 ### PC → Quest (Quest receives)
 
 | Port | Protocol | Data |
 |------|----------|------|
 | 8000, 8002, 8004, 8006, 8008 | UDP video | Video streams (base port 8000 + `i*2`, up to 5 windows) |
-| 8011 | UDP text | Virtual robot joint states: `VRJS,{frameId},{dof},{actual_0..actual_{dof-1}},{command_0..command_{dof-1}},{gripperOpen}` (radians, CSV) |
 | 8012 | UDP JSON | **TCP pose + 6D force (single-port merge)** — see below |
-| 8013 | UDP binary / JSON | Force backup port (ForceSensorReceiver, disabled by default in the configured scene) |
 | 8765 | WebSocket | WebRTC signaling (SDP/ICE exchange) |
+
+### Legacy / disabled ports
+
+| Port | Status | Notes |
+|------|--------|-------|
+| 8005 | Deprecated | UI/resolution state (`{port},{res};...;{focusModeLabel};`). Was sent by `UdpWindowManager.Resolution_loop`; no longer sent since the precision/focus-mode button was removed from the scene |
+| 8011 | Not in scene | Virtual robot joint states `VRJS,{frameId},{dof},{actual...},{command...},{gripper}` — code exists but `VirtualRobotJointStateReceiver` is not attached in the shipped scene |
+| 8013 | Disabled backup | Force fallback listener (see below), ForceSensorReceiver is disabled in the configured scene |
 
 ### Port 8012 — TCP Pose + Force (JSON)
 
