@@ -134,11 +134,14 @@ public class UdpWindowManager : MonoBehaviour
             value = (value + 1) % optionCount;
             CanvasMove();
         }
-        _sendTimer += Time.deltaTime;
-        if (_sendTimer >= sendInterval)
+        if (FocusModeButtonLabel != null)
         {
-            _sendTimer = 0f;
-            Resolution_loop();
+            _sendTimer += Time.deltaTime;
+            if (_sendTimer >= sendInterval)
+            {
+                _sendTimer = 0f;
+                Resolution_loop();
+            }
         }
 
 
