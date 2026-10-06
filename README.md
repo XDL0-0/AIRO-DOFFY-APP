@@ -2,6 +2,28 @@
 
 Quest 3 VR teleoperation app with force visualization and calibration.
 
+## Release/source scope
+
+This is the historical source snapshot tagged `v0.6.0` at
+[`994a672175af58fc4f14b92f2ca10b4595c8e0a9`](https://github.com/XDL0-0/AIRO-DOFFY-APP/tree/994a672175af58fc4f14b92f2ca10b4595c8e0a9)
+(2026-08-12). It does not contain the later BODY telemetry implementation and
+**is not the complete source for AIRO Doffy v0.9.7 / code 18**.
+
+The October APK is distributed in
+[AIRO-Doffy at `a3d1233`](https://github.com/XDL0-0/AIRO-Doffy/tree/a3d1233c53d82f35394f68f0c8d2faa2a4857c81/apk).
+Its complete Unity source revision was not found in the public branches, tags
+or reachable history of either repository during the 2026-10-07 audit. Local
+build notes refer to a separate `CodexBracelet` project; that project was not
+available for this audit. Partial BODY component copies in the PC repository
+do not constitute a complete build project. Do not use this historical tag or
+the PC distribution commit as a source pin for that APK.
+
+At the historical SHA, Unity settings contain `bundleVersion: 0.5.0` and
+`AndroidBundleVersionCode: 1`; the `v0.6.0` tag name alone does not verify even
+the historical binary/source association. The installation and build guidance
+below describes this historical project. A future APK needs an explicit full
+source SHA, matching version/code, package lock and recorded APK SHA256.
+
 ## APK Installation
 
 Copy `Teleoperation.apk` to your Quest 3 and install via SideQuest or `adb install`.
