@@ -1,93 +1,36 @@
-# AIRO-DOFFY-APP
+# Airo-Doffy Unity App
 
-Quest 3 VR teleoperation app with force visualization and calibration.
+Unity app for Airo-Doffy VR teleoperation on Meta Quest. The Python runtime and APK are available in [Airo-Doffy](https://github.com/XDL0-0/AIRO-Doffy).
 
-> **Current Unity project (v0.9.7)**: [AIRO Doffy](AIRO-Doffy/README.md), including scripts, scene resources, the original Unity `.meta` files, package versions and project configuration. Open this folder as a separate Unity project.
->
-> The project at the repository root and the instructions below describe the historical v0.6.0 app. The current project is stored separately to preserve its paths and GUIDs without mixing the two projects.
+The current Unity project is in **[AIRO-Doffy/](AIRO-Doffy/README.md)**.
 
-## APK Installation
+## Features
 
-Copy `Teleoperation.apk` to your Quest 3 and install via SideQuest or `adb install`.
+- Controller and hand tracking for robot teleoperation.
+- Camera viewing over WebRTC or UDP.
+- Robot alignment and force visualization.
+- Dataset recording controls.
+- Optional WRM upper-limb mapping and BODY telemetry.
 
-## Unity Project Structure
+## Open and build
 
-| Folder | Purpose |
-|--------|---------|
-| `Assets/` | Scripts, scenes, prefabs, materials |
-| `Packages/` | Package manifest |
-| `ProjectSettings/` | Unity project configuration |
+1. Clone this repository and add the **AIRO-Doffy** subfolder to Unity Hub.
+2. Use Unity **6000.5.6f1** with Android Build Support, SDK, NDK and OpenJDK.
+3. Allow Package Manager to restore the locked dependencies, including Meta XR All-in-One **205.0.0**.
+4. Open `Assets/Scenes/Teleoperation.unity` and run **Tools → DOFFY → Validate scene**.
+5. Build v0.9.7 / code 18 using **Tools → DOFFY → Build Meta ARM64-only update APK**.
 
-## Key Features
+See the [project guide](AIRO-Doffy/README.md) for build outputs and app controls. To install the existing APK, follow the [release notes](https://github.com/XDL0-0/AIRO-Doffy/blob/main/apk/RELEASE.md).
 
-- **TCP Pose Streaming** — receive robot end-effector pose via UDP JSON (port 8012)
-- **Force Visualization** — real-time 6-axis force/torque arrows at TCP
-- **Coordinate Calibration** — X+A to enter calibration mode, align virtual axes with physical robot base
-- **Passthrough AR** — Quest 3 color passthrough for real-world alignment
+## Connect to the PC
 
-## Network Interfaces
+In **Teleop Config → Connection & input**, enter the PC address and press **Apply**. Match the input and camera transport to the Python runtime, complete **Alignment**, then press **Start Teleop**.
 
-Default PC (workstation) IP is configured in `AppManager` / `UdpSocket` (192.168.43.198). Quest listens on the same LAN.
+BODY viewing is independent: enable **System Setting → Body data: ON** after applying the PC address.
 
-### Quest → PC (Quest sends)
+## Historical project
 
-| Port | Protocol | Data |
-|------|----------|------|
-| 8001 | UDP text | Teleop data (100 Hz). Controller pose: `C,{frameId},{timestampNs},{leftCtrl},{rightCtrl}`. Hand tracking: `H,L|R,{frameId},{timestampNs},{wristPos},{wristRot},{bones...}` or binary `HB,{base64}` |
-| 8003 | UDP text | Recording control: `Start` / `Stop` |
+The root `Assets/`, `Packages/` and `ProjectSettings/` folders belong to the older v0.6.0 project. Open the current **AIRO-Doffy** folder as a separate Unity project.
 
-### PC → Quest (Quest receives)
-
-| Port | Protocol | Data |
-|------|----------|------|
-| 8000, 8002, 8004, 8006, 8008 | UDP video | Video streams (base port 8000 + `i*2`, up to 5 windows) |
-| 8012 | UDP JSON | **TCP pose + 6D force (single-port merge)** — see below |
-| 8765 | WebSocket | WebRTC signaling (SDP/ICE exchange) |
-
-### Legacy / disabled ports
-
-| Port | Status | Notes |
-|------|--------|-------|
-| 8005 | Deprecated | UI/resolution state (`{port},{res};...;{focusModeLabel};`). Was sent by `UdpWindowManager.Resolution_loop`; no longer sent since the precision/focus-mode button was removed from the scene |
-| 8011 | Not in scene | Virtual robot joint states `VRJS,{frameId},{dof},{actual...},{command...},{gripper}` — code exists but `VirtualRobotJointStateReceiver` is not attached in the shipped scene |
-| 8013 | Disabled backup | Force fallback listener (see below), ForceSensorReceiver is disabled in the configured scene |
-
-### Port 8012 — TCP Pose + Force (JSON)
-
-```json
-{
-  "rightTCP": {
-    "position": [x, y, z],
-    "rotation": [w, x, y, z],
-    "force": [Fx, Fy, Fz],
-    "torque": [Mx, My, Mz]
-  }
-}
-```
-
-- `position`: meters, in the calibrated robot base frame (Unity left-handed, `TCP_DISPLAY_AXES = [[0,-1,0],[0,0,1],[1,0,0]]` applied on the Python side)
-- `rotation`: [w, x, y, z], Unity convention
-- `force` / `torque`: Newtons / N·m, drive the force arrow at the TCP (display length = force × `forceDisplayScale` 0.01)
-- `leftTCP` accepted for bimanual setups; this project runs single-arm, so only `rightTCP` is used
-
-### Port 8013 — 6D Force backup (binary)
-
-Fallback listener when TCP pose comes from another channel:
-
-```
-6 × int32 little-endian (24 bytes): Fx Fy Fz Mx My Mz
-```
-
-raw value × `forceSensitivity` (0.00001) = arrow length in meters. TactAR-style JSON `{"device_id": "...", "arrow": {"start": [...], "end": [...]}, "scale": [...]}` is also accepted.
-
-## Scene
-
-Open `Assets/Scenes/V0.6.0 Realtime_Force.unity`.
-
-Run `Tools > TactAR Features > Configure V0.6.0 Scene` to set up the calibration/TCP/force hierarchy.
-
-## Build
-
-- Unity 6000.5.6f1
-- Meta Quest 3 (Android ARM64)
-- IL2CPP backend
+- [Historical setup instructions](https://github.com/XDL0-0/AIRO-DOFFY-APP/blob/994a672175af58fc4f14b92f2ca10b4595c8e0a9/README.md)
+- [Historical UDP protocol](Docs/UDP_DataFormat_TactAR_Features.md)
