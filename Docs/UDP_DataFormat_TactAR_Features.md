@@ -1,6 +1,8 @@
 # TactAR 功能 UDP 数据格式说明(Quest ← workstation)
 
-本地 V0.6.0 场景:**合并到单端口 8012**,TCP 位姿 + 6D 力一起发。
+本文记录历史 v0.6.0 项目；当前应用请参阅 [Airo-Doffy 项目指南](../AIRO-Doffy/README.md)。
+
+V0.6.0 场景:**合并到单端口 8012**,TCP 位姿 + 6D 力一起发。
 
 | 端口 | 用途 | 格式 |
 |------|------|------|
@@ -53,7 +55,9 @@ def send_state(quest_ip, pos, quat_wxyz, force, torque=(0,0,0)):
 # 从 RealMan teleop:
 # robot = teleop.state_snapshot()
 # send_state(quest_ip, robot.tcp_pose[:3,3], quat_wxyz, robot.wrench[:3])
-```,与触觉数据同帧率
+```
+
+发送频率与触觉数据一致。
 
 ---
 

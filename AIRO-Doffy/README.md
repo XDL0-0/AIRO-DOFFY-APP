@@ -1,6 +1,6 @@
-# AIRO Doffy
+# Airo-Doffy
 
-The current AIRO Doffy Quest VR teleoperation project, corresponding to the v0.9.7 / code 18 implementation. The matching PC runtime is [doffy-teleop](https://github.com/XDL0-0/AIRO-Doffy).
+Unity project for the Airo-Doffy v0.9.7 Quest app. The PC runtime is [Airo-Doffy](https://github.com/XDL0-0/AIRO-Doffy).
 
 This folder contains `Assets/`, `Packages/` and `ProjectSettings/`, including the scripts, scene, prefabs, materials, textures, fonts, shaders, optional robot models and original Unity `.meta` files. Package versions are locked for restoration through Unity Package Manager. APKs, build outputs, SDK caches and local credentials are excluded.
 
@@ -15,7 +15,11 @@ This folder contains `Assets/`, `Packages/` and `ProjectSettings/`, including th
 
 Custom code is under `Assets/Teleop`: Core, Input, Calibration, UpperLimb, Feedback, Networking, Protocol, Media, UI, Visualization, Diagnostics, Editor, Tests and Legacy.
 
-In Session, set and Apply the PC's IPv4 address, choose Controllers or Hands, then Start session. Cameras supports UDP or WebRTC. Alignment provides reference calibration and robot-base placement. WRM upper-limb calibration requires Controllers mode. BODY telemetry defaults to **OFF** on each launch; enable it in Session to send BODY v1 over UDP port **8015**. Viewing BODY telemetry does not require Start session.
+1. In **Teleop Config → Connection & input**, enter the PC IPv4 address with **Edit IP**, press **Apply**, and choose **Controllers** or **Hand tracking**.
+2. Use the **Alignment** tab for reference calibration and robot-base placement. Select the matching transport in **Camera** using **Use WebRTC** or **Use UDP**.
+3. Press **Start Teleop**. Use **Start recording** and **Stop recording** in the record panel; **Undo episode → Confirm undo** removes the latest episode.
+
+Optional WRM calibration is under **WRM Setting** and requires Controllers mode. BODY telemetry defaults to **OFF** on every launch; enable **System Setting → Body data: ON** to send BODY v1 over UDP **8015**. BODY viewing does not require **Start Teleop**.
 
 The scene's configuration and runtime resources, including `TeleopConfigUpperLimb.asset`, `WristUISettings.asset` and `BraceletBody.shader`, are included. Optional robot model assets are retained for the original visualization modules. Unused Python preprocessing scripts and Python bytecode are excluded.
 
@@ -31,10 +35,6 @@ The project targets Android **ARM64** with **IL2CPP**. The build menus write ins
 
 The dedicated ARM64-only Meta build filters the generated SDK archive and restores it afterward. Existing app updates require the appropriate signing key to be configured locally. The committed project contains no signing key or access token; SDK development-agent authentication and unrelated credential fields are cleared.
 
-## Validation
+## Project status
 
-On 2026-10-07, a fresh project extracted from the staged Git tree, with no existing `Library/`, successfully resolved packages, imported and compiled in Unity 6000.5.6f1. `Doffy.Editor.TeleopBuild.ValidateScene` passed and Unity exited with code 0. Unity's API Updater automatically migrated the legacy GUID API in Meta Audio 85 during first import; no SDK cache patch is committed. A separate static audit checked 850 serialized script references and the enabled scene with no errors.
-
-This check did not build a new APK or run the app on a headset.
-
-Historical Quest, BODY and build evidence is recorded in the [PC repository](https://github.com/XDL0-0/AIRO-Doffy/blob/main/docs/body_visualization/validation.md). Headset interaction and robot acceptance are separate from project import and source compilation.
+On 2026-10-07, a clean project import, compilation and scene validation passed in Unity 6000.5.6f1. This check did not build a new APK or run the app on a headset. Headset interaction and robot operation still require device testing.
