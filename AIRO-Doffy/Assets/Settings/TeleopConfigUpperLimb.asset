@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b2d57c905f46a2af657076a7f64b6d, type: 3}
+  m_Name: TeleopConfigUpperLimb
+  m_EditorClassIdentifier:
+  defaultServerIP: 10.10.131.72
+  posePort: 8001
+  controlPort: 8005
+  virtualRobotStatePort: 8011
+  tactilePort: 8012
+  signalingPort: 8765
+  udpVideoBasePort: 8000
+  defaultWebRTCTrackCount: 1
+  sendRateHz: 60
+  useBinaryProtocol: 0
+  preventSleep: 1
+  pauseControlOnTrackingLoss: 1
+  requireRecalibrateAfterTrackingLoss: 1

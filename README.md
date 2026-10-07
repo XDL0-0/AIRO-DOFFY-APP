@@ -2,6 +2,10 @@
 
 Quest 3 VR teleoperation app with force visualization and calibration.
 
+> **Current Unity project (v0.9.7)**: [AIRO Doffy](AIRO-Doffy/README.md), including scripts, scene resources, the original Unity `.meta` files, package versions and project configuration. Open this folder as a separate Unity project.
+>
+> The project at the repository root and the instructions below describe the historical v0.6.0 app. The current project is stored separately to preserve its paths and GUIDs without mixing the two projects.
+
 ## APK Installation
 
 Copy `Teleoperation.apk` to your Quest 3 and install via SideQuest or `adb install`.
